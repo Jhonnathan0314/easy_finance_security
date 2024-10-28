@@ -47,7 +47,8 @@ public class User implements UserDetails {
                 getId(), user.getId()) &&
                 Objects.equals(getUsername(), user.getUsername()) &&
                 Objects.equals(getName(), user.getName()) &&
-                Objects.equals(getLastName(), user.getLastName());
+                Objects.equals(getLastName(), user.getLastName()) &&
+                Objects.equals(getState(), user.getState());
     }
 
     @Override

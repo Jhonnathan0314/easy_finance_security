@@ -29,10 +29,8 @@ public class CreateUserUseCase {
 
         if(!user.isValid(user)) throw new InvalidBodyException(errorMessages.INVALID_BODY);
 
-        logger.info("VALIDANDO DUPLICADOS");
         if(userRepository.findByEmail(user.getEmail()).isPresent()) throw new DuplicatedException(errorMessages.DUPLICATED);
 
-        logger.info("PASE VALIDACION DUPLICADOS");
         return userRepository.create(user);
     }
 
