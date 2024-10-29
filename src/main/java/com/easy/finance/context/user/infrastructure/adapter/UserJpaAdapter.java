@@ -53,9 +53,6 @@ public class UserJpaAdapter implements UserRepository {
 
     @Override
     public void deleteById(Long id) {
-        Optional<UserEntity> user = userJpaRepository.findById(id);
-        if(user.isPresent()) {
-            userJpaRepository.deleteById(id);
-        }
+        userJpaRepository.deleteById(id);
     }
 }

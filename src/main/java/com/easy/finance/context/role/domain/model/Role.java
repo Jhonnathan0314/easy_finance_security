@@ -16,6 +16,12 @@ public class Role {
     private String name;
     private StateEnum state;
 
+    public boolean isValid(Role role) {
+        if(role.getName() == null) return false;
+
+        return !role.getName().isEmpty();
+    }
+
     @Override
     public String toString() {
         return "Role{" +
