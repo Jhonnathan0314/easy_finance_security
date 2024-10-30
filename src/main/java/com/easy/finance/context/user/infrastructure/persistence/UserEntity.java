@@ -1,5 +1,6 @@
 package com.easy.finance.context.user.infrastructure.persistence;
 
+import com.easy.finance.context.account_has_user.infrastructure.persistence.AccountHasUserEntity;
 import com.easy.finance.context.role.infrastructure.persistence.RoleEntity;
 import com.easy.finance.utils.constants.StateEnum;
 import jakarta.persistence.*;
@@ -11,6 +12,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Data
 @Builder
