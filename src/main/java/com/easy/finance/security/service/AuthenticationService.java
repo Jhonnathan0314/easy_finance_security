@@ -56,21 +56,7 @@ public class AuthenticationService {
         Map<String, String> extraClaims = new HashMap<>();
         extraClaims.put("user_role", userDb.get().getRole().getName());
 
-        try {
-            List<AccountHasUser> accountHasUsers = findByIdUserAccountHasUserUseCase.findByIdUser(userDb.get().getId());
-            if(!accountHasUsers.isEmpty()){
-                StringBuilder accounts = new StringBuilder();
-                for(int i = 0; i < accountHasUsers.size(); i++) {
-                    accounts.append(accountHasUsers.get(i).getIdAccount().getId().toString());
-                    if(i + 1 < accountHasUsers.size())
-                        accounts.append(",");
-                }
-                extraClaims.put("accounts", accounts.toString());
-            }
-        } catch (NoResultsException e) {
-            extraClaims.put("accounts", "");
-            logger.info("SECURITY - ACCION LOGIN -> El usuario no cuenta con cuentas asociadas");
-        }
+        extraClaims = putAccountsInToken(extraClaims, userDb.get());
 
         String token = jwtService.generateToken(userDb.get(), extraClaims);
 
@@ -93,12 +79,33 @@ public class AuthenticationService {
         Map<String, String> extraClaims = new HashMap<>();
         extraClaims.put("user_role", user.getRole().getName());
 
+        extraClaims = putAccountsInToken(extraClaims, user);
+
         String token = jwtService.generateToken(user, extraClaims);
 
         logger.info("SECURITY - ACCION REGISTER -> Usuario registrado con exito, token generado correctamente");
         return AuthResponse.builder()
                 .token(token)
                 .build();
+    }
+
+    private Map<String, String> putAccountsInToken(Map<String, String> extraClaims, User user) {
+        try {
+            List<AccountHasUser> accountHasUsers = findByIdUserAccountHasUserUseCase.findByIdUser(user.getId());
+            if(!accountHasUsers.isEmpty()){
+                StringBuilder accounts = new StringBuilder();
+                for(int i = 0; i < accountHasUsers.size(); i++) {
+                    accounts.append(accountHasUsers.get(i).getIdAccount().getId().toString());
+                    if(i + 1 < accountHasUsers.size())
+                        accounts.append(",");
+                }
+                extraClaims.put("accounts", accounts.toString());
+            }
+        } catch (NoResultsException e) {
+            extraClaims.put("accounts", "");
+            logger.info("SECURITY - ACCION LOGIN -> El usuario no cuenta con cuentas asociadas");
+        }
+        return extraClaims;
     }
 
 }
