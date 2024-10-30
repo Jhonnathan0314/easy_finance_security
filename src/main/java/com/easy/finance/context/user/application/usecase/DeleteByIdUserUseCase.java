@@ -22,6 +22,7 @@ public class DeleteByIdUserUseCase {
     public void deleteById(Long id) throws NonExistenceException {
         Optional<User> user = userRepository.findById(id);
         if(user.isEmpty()) throw new NonExistenceException(errorMessages.NON_EXISTENT_DATA);
+        logger.info("ACCION DELETEBYID USER -> Encontre usuario con exito");
         userRepository.deleteById(id);
     }
 }

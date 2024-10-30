@@ -24,11 +24,14 @@ public class UpdateUserUseCase {
     public User update(User user) throws NoIdReceivedException, InvalidBodyException, NonExistenceException, NoChangesException, DuplicatedException {
 
         if(user.getId() == null) throw new NoIdReceivedException(errorMessages.NO_ID_RECEIVED);
+        logger.info("ACCION UPDATE USER -> Id validado con exito");
 
         if(!user.isValid(user)) throw new InvalidBodyException(errorMessages.INVALID_BODY);
+        logger.info("ACCION UPDATE USER -> Body validado con exito");
 
         Optional<User> optUser = userRepository.findById(user.getId());
         if(optUser.isEmpty()) throw new NonExistenceException(errorMessages.NON_EXISTENT_DATA);
+        logger.info("ACCION UPDATE USER -> Validacion usuario existente con exito");
 
         User userDb = optUser.get();
 
@@ -36,9 +39,11 @@ public class UpdateUserUseCase {
         user.setState(userDb.getState());
 
         if(userDb.equals(user) && (user.getPassword() == null || user.getPassword().isEmpty())) throw new NoChangesException(errorMessages.NO_CHANGES);
+        logger.info("ACCION UPDATE USER -> Validacion cambios a aplicar con exito");
 
         if(!user.getEmail().equals(userDb.getEmail())){
             if(userRepository.findByEmail(user.getEmail()).isPresent()) throw new DuplicatedException(errorMessages.DUPLICATED);
+            logger.info("ACCION UPDATE USER -> Validacion no duplicado exitosa");
         }
 
         if(user.getPassword() != null && !user.getPassword().isEmpty()) {

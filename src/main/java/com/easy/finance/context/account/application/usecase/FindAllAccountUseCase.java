@@ -8,10 +8,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 @RequiredArgsConstructor
 public class FindAllAccountUseCase {
+
+    private final Logger logger = Logger.getLogger(FindAllAccountUseCase.class.getName());
 
     private final AccountRepository accountRepository;
     private final ErrorMessages errorMessages = new ErrorMessages();
@@ -20,6 +23,7 @@ public class FindAllAccountUseCase {
         List<Account> accounts = accountRepository.findAll();
 
         if(accounts.isEmpty()) throw new NoResultsException(errorMessages.NO_RESULTS);
+        logger.info("ACCION FINDALL ACCOUNT -> Encontre cuentas con exito");
 
         return accounts;
     }

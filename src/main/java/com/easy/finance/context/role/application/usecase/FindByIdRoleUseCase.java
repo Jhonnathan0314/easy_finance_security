@@ -8,10 +8,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 @RequiredArgsConstructor
 public class FindByIdRoleUseCase {
+
+    private final Logger logger = Logger.getLogger(FindByIdRoleUseCase.class.getName());
 
     private final RoleRepository roleRepository;
     private final ErrorMessages errorMessages = new ErrorMessages();
@@ -20,6 +23,7 @@ public class FindByIdRoleUseCase {
         Optional<Role> roles = roleRepository.findById(id);
         
         if(roles.isEmpty()) throw new NoResultsException(errorMessages.NO_RESULTS);
+        logger.info("ACCION FINDBYID ROLE -> Encontre rol con exito");
 
         return roles.get();
     }

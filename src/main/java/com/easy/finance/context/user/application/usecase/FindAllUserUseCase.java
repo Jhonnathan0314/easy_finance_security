@@ -22,6 +22,7 @@ public class FindAllUserUseCase {
     public List<User> findAll() throws NoResultsException {
         List<User> users = userRepository.findAll();
         if(users.isEmpty()) throw new NoResultsException(errorMessages.NO_RESULTS);
+        logger.info("ACCION FINDALL USER -> Encontre usuarios con exito");
         return users;
     }
 

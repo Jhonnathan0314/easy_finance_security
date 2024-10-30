@@ -28,27 +28,25 @@ public class CreateAccountHasUserUseCase {
     private final ErrorMessages errorMessages = new ErrorMessages();
 
     public AccountHasUser create(AccountHasUser accountHasUser) throws NonExistenceException, DuplicatedException, InvalidBodyException {
-        logger.info("Ingreso caso de uso create AccountHasUser");
         if(!accountHasUser.isValid(accountHasUser)) throw new InvalidBodyException(errorMessages.INVALID_BODY);
+        logger.info("ACCION CREATE ACCOUNT_HAS_ROLE -> Body validado con exito");
 
-        logger.info("AccountHasUser create: Paso validacion invalid body");
         Optional<Account> accountOpt = accountRepository.findById(accountHasUser.getId().getIdAccount());
         if(accountOpt.isEmpty()) throw new NonExistenceException(errorMessages.NON_EXISTENT_DATA);
+        logger.info("ACCION UPDATE ACCOUNT_HAS_ROLE -> Validacion cuenta existente con exito");
 
         accountHasUser.setIdAccount(accountOpt.get());
 
-        logger.info("AccountHasUser create: Paso validacion account");
         Optional<User> userOpt = userRepository.findById(accountHasUser.getId().getIdUser());
         if(userOpt.isEmpty()) throw new NonExistenceException(errorMessages.NON_EXISTENT_DATA);
+        logger.info("ACCION UPDATE ACCOUNT_HAS_ROLE -> Validacion usuario existente con exito");
 
         accountHasUser.setIdUser(userOpt.get());
 
-        logger.info("AccountHasUser create: Paso validacion user");
         Optional<AccountHasUser> accountHasUserOpt = accountHasUserRepository.findById(accountHasUser.getId());
         if(accountHasUserOpt.isPresent()) throw new DuplicatedException(errorMessages.DUPLICATED);
+        logger.info("ACCION CREATE ACCOUNT_HAS_ROLE -> Validacion no duplicado exitosa");
 
-        logger.info("AccountHasUser create: Paso validacion duplicated");
-        logger.info("Envio peticion create: " + accountHasUser);
         return accountHasUserRepository.create(accountHasUser);
     }
 

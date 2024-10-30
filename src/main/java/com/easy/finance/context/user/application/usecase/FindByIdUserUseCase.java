@@ -23,6 +23,7 @@ public class FindByIdUserUseCase {
         Optional<User> optUser = userRepository.findById(id);
 
         if(optUser.isEmpty()) throw new NoResultsException(errorMessages.NO_RESULTS);
+        logger.info("ACCION FINDBYID USER -> Encontre usuario con exito");
 
         return optUser.get();
     }

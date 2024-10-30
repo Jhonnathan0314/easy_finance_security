@@ -24,12 +24,15 @@ public class CreateUserUseCase {
     public User create(User user) throws InvalidBodyException, DuplicatedException {
 
         if(user.getPassword() == null) throw new InvalidBodyException(errorMessages.INVALID_BODY);
+        logger.info("ACCION CREATE USER -> Password validado con exito");
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         if(!user.isValid(user)) throw new InvalidBodyException(errorMessages.INVALID_BODY);
+        logger.info("ACCION CREATE USER -> Body validado con exito");
 
         if(userRepository.findByEmail(user.getEmail()).isPresent()) throw new DuplicatedException(errorMessages.DUPLICATED);
+        logger.info("ACCION CREATE USER -> Validacion no duplicado exitosa");
 
         return userRepository.create(user);
     }

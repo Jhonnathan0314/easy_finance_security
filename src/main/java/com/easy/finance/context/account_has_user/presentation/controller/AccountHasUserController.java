@@ -20,12 +20,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/v1/security/account_has_user")
 @CrossOrigin("*")
 @RequiredArgsConstructor
 public class AccountHasUserController {
+
+    private final Logger logger = Logger.getLogger(AccountHasUserController.class.getName());
 
     private final FindByIdAccountAccountHasUserUseCase findByIdAccountAccountHasUserUseCase;
     private final FindByIdUserAccountHasUserUseCase findByIdUserAccountHasUserUseCase;
@@ -41,12 +44,14 @@ public class AccountHasUserController {
 
     @GetMapping("/account/{id}")
     public ResponseEntity<ApiResponse<List<AccountHasUserDto>>> findByIdAccount(@PathVariable Long id) {
+        logger.info("ACCION FINDBYIDACCOUNT ACCOUNT_HAS_ROLE -> Inicia consulta cuenta tiene usuario con id account: " + id);
         ApiResponse<List<AccountHasUserDto>> response = new ApiResponse<>();
         try {
             List<AccountHasUser> users = findByIdAccountAccountHasUserUseCase.findByIdAccount(id);
             response.setData(accountHasUserMapper.modelsToDtos(users));
             return ResponseEntity.ok(response);
         }catch (NoResultsException e) {
+            logger.info("ACCION FINDBYIDACCOUNT ACCOUNT_HAS_ROLE -> No encontre resultados - NoResultsException");
             response.setError(httpUtils.determineErrorMessage(e));
             return new ResponseEntity<>(response, httpUtils.determineHttpStatus(e));
         }
@@ -54,12 +59,14 @@ public class AccountHasUserController {
 
     @GetMapping("/user/{id}")
     public ResponseEntity<ApiResponse<List<AccountHasUserDto>>> findByIdUser(@PathVariable Long id) {
+        logger.info("ACCION FINDBYIDUSER ACCOUNT_HAS_ROLE -> Inicia consulta cuenta tiene usuario con id user: " + id);
         ApiResponse<List<AccountHasUserDto>> response = new ApiResponse<>();
         try {
             List<AccountHasUser> users = findByIdUserAccountHasUserUseCase.findByIdUser(id);
             response.setData(accountHasUserMapper.modelsToDtos(users));
             return ResponseEntity.ok(response);
         }catch (NoResultsException e) {
+            logger.info("ACCION FINDBYIDUSER ACCOUNT_HAS_ROLE -> No encontre resultados - NoResultsException");
             response.setError(httpUtils.determineErrorMessage(e));
             return new ResponseEntity<>(response, httpUtils.determineHttpStatus(e));
         }
@@ -67,6 +74,7 @@ public class AccountHasUserController {
 
     @GetMapping("/account/{idAccount}/user/{idUser}")
     public ResponseEntity<ApiResponse<AccountHasUserDto>> findById(@PathVariable Long idAccount, @PathVariable Long idUser) {
+        logger.info("ACCION FINDBYID ACCOUNT_HAS_ROLE -> Inicia consulta cuenta tiene usuario con id cuenta: " + idAccount + " | id usuario: " + idUser);
         ApiResponse<AccountHasUserDto> response = new ApiResponse<>();
         try {
             AccountHasUserId id = AccountHasUserId.builder()
@@ -77,6 +85,7 @@ public class AccountHasUserController {
             response.setData(accountHasUserMapper.modelToDto(user));
             return ResponseEntity.ok(response);
         }catch (NoResultsException e) {
+            logger.info("ACCION FINDBYID ACCOUNT_HAS_ROLE -> No encontre resultados - NoResultsException");
             response.setError(httpUtils.determineErrorMessage(e));
             return new ResponseEntity<>(response, httpUtils.determineHttpStatus(e));
         }
@@ -84,12 +93,14 @@ public class AccountHasUserController {
 
     @GetMapping("/state/{state}")
     public ResponseEntity<ApiResponse<List<AccountHasUserDto>>> findByState(@PathVariable StateEnum state) {
+        logger.info("ACCION FINDBYSTATE ACCOUNT_HAS_ROLE -> Inicia consulta cuenta tiene usuario con estado: " + state);
         ApiResponse<List<AccountHasUserDto>> response = new ApiResponse<>();
         try {
             List<AccountHasUser> model = findByStateAccountHasUserUseCase.findByState(state);
             response.setData(accountHasUserMapper.modelsToDtos(model));
             return ResponseEntity.ok(response);
         }catch (NoResultsException e) {
+            logger.info("ACCION FINDBYSTATE ACCOUNT_HAS_ROLE -> No encontre resultados - NoResultsException");
             response.setError(httpUtils.determineErrorMessage(e));
             return new ResponseEntity<>(response, httpUtils.determineHttpStatus(e));
         }
@@ -97,12 +108,14 @@ public class AccountHasUserController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<AccountHasUserDto>> create(@RequestBody AccountHasUserCreateDto dto) {
+        logger.info("ACCION CREATE ACCOUNT_HAS_ROLE -> Inicia creacion cuenta tiene usuario con body: " + dto.toString());
         ApiResponse<AccountHasUserDto> response = new ApiResponse<>();
         try {
             AccountHasUser model = createAccountHasUserUseCase.create(accountHasUserCreateMapper.dtoToModel(dto));
             response.setData(accountHasUserMapper.modelToDto(model));
             return ResponseEntity.ok(response);
         }catch (NonExistenceException | DuplicatedException | InvalidBodyException e) {
+            logger.info("ACCION CREATE ACCOUNT_HAS_ROLE -> Ha ocurrido un error al crear cuenta tiene usuario: " + e.getMessage());
             response.setError(httpUtils.determineErrorMessage(e));
             return new ResponseEntity<>(response, httpUtils.determineHttpStatus(e));
         }
@@ -110,6 +123,7 @@ public class AccountHasUserController {
 
     @DeleteMapping("/account/{idAccount}/user/{idUser}")
     public ResponseEntity<ApiResponse<Object>> deleteById(@PathVariable Long idAccount, @PathVariable Long idUser) {
+        logger.info("ACCION DELETEBYID ACCOUNT_HAS_ROLE -> Inicia eliminacion cuenta tiene usuario con id cuenta: " + idAccount + " | id usuario: " + idUser);
         ApiResponse<Object> response = new ApiResponse<>();
         try {
             AccountHasUserId id = AccountHasUserId.builder()
@@ -119,6 +133,7 @@ public class AccountHasUserController {
             deleteByIdAccountHasUserUseCase.deleteById(id);
             return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
         }catch (NonExistenceException e) {
+            logger.info("ACCION DELETEBYID ACCOUNT_HAS_ROLE -> Ha ocurrido un error al eliminar cuenta tiene usuario: " + e.getMessage());
             response.setError(httpUtils.determineErrorMessage(e));
             return new ResponseEntity<>(response, httpUtils.determineHttpStatus(e));
         }

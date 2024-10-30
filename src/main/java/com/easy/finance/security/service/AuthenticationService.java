@@ -56,7 +56,8 @@ public class AuthenticationService {
         Map<String, String> extraClaims = new HashMap<>();
         extraClaims.put("user_role", userDb.get().getRole().getName());
 
-        extraClaims = putAccountsInToken(extraClaims, userDb.get());
+        String accounts = putAccountsInToken(userDb.get());
+        extraClaims.put("accounts", accounts);
 
         String token = jwtService.generateToken(userDb.get(), extraClaims);
 
@@ -79,7 +80,8 @@ public class AuthenticationService {
         Map<String, String> extraClaims = new HashMap<>();
         extraClaims.put("user_role", user.getRole().getName());
 
-        extraClaims = putAccountsInToken(extraClaims, user);
+        String accounts = putAccountsInToken(user);
+        extraClaims.put("accounts", accounts);
 
         String token = jwtService.generateToken(user, extraClaims);
 
@@ -89,7 +91,7 @@ public class AuthenticationService {
                 .build();
     }
 
-    private Map<String, String> putAccountsInToken(Map<String, String> extraClaims, User user) {
+    private String putAccountsInToken(User user) {
         try {
             List<AccountHasUser> accountHasUsers = findByIdUserAccountHasUserUseCase.findByIdUser(user.getId());
             if(!accountHasUsers.isEmpty()){
@@ -99,13 +101,12 @@ public class AuthenticationService {
                     if(i + 1 < accountHasUsers.size())
                         accounts.append(",");
                 }
-                extraClaims.put("accounts", accounts.toString());
+                return accounts.toString();
             }
         } catch (NoResultsException e) {
-            extraClaims.put("accounts", "");
             logger.info("SECURITY - ACCION LOGIN -> El usuario no cuenta con cuentas asociadas");
         }
-        return extraClaims;
+        return "";
     }
 
 }

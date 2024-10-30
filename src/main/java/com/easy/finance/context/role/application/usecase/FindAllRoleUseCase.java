@@ -8,10 +8,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 @RequiredArgsConstructor
 public class FindAllRoleUseCase {
+
+    private final Logger logger = Logger.getLogger(FindAllRoleUseCase.class.getName());
 
     private final RoleRepository roleRepository;
     private final ErrorMessages errorMessages = new ErrorMessages();
@@ -20,6 +23,7 @@ public class FindAllRoleUseCase {
         List<Role> roles = roleRepository.findAll();
 
         if(roles.isEmpty()) throw new NoResultsException(errorMessages.NO_RESULTS);
+        logger.info("ACCION FINDALL ROLE -> Encontre roles con exito");
 
         return roles;
     }
