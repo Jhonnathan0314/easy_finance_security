@@ -22,12 +22,4 @@ public class Role {
         return !role.getName().isEmpty();
     }
 
-    @Override
-    public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", state='" + state.toString() + '\'' +
-                '}';
-    }
 }

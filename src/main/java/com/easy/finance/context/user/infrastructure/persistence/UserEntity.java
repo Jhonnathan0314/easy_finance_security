@@ -63,18 +63,4 @@ public class UserEntity {
                 .build();
     }
 
-    @Override
-    public String toString() {
-        return "UserEntity{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", password='******'" +
-                ", role=" + role +
-                ", creationDate=" + creationDate +
-                ", updateDate=" + updateDate +
-                ", state='" + state + '\'' +
-                '}';
-    }
 }

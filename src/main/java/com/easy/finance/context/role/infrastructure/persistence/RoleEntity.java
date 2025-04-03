@@ -43,14 +43,4 @@ public class RoleEntity {
         this.state = StateEnum.active;
     }
 
-    @Override
-    public String toString() {
-        return "RoleEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", creationDate=" + creationDate +
-                ", updateDate=" + updateDate +
-                ", state='" + state + '\'' +
-                '}';
-    }
 }

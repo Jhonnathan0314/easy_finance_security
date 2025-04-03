@@ -87,7 +87,7 @@ public class UserUpdateMapper implements Mapper<UserEntity, User, UserUpdateDto>
     }
 
     @Override
-    public List<User> dtosToModels(List<UserUpdateDto> dtos) {
+    public List<User>  dtosToModels(List<UserUpdateDto> dtos) {
         return dtos.stream()
                 .map(this::dtoToModel)
                 .collect(Collectors.toList());

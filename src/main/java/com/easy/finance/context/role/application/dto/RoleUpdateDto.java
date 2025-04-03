@@ -21,7 +21,7 @@ public class RoleUpdateDto {
         return "RoleDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", state='" + state.toString() + '\'' +
+                ", state='" + state + '\'' +
                 '}';
     }
 }

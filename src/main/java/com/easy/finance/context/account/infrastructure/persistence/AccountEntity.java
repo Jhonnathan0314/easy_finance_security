@@ -46,15 +46,4 @@ public class AccountEntity {
         this.state = StateEnum.active;
     }
 
-    @Override
-    public String toString() {
-        return "AccountEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", creationDate=" + creationDate +
-                ", updateDate=" + updateDate +
-                ", state=" + state +
-                '}';
-    }
 }
